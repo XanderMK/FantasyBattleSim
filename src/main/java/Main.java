@@ -4,11 +4,11 @@ import static com.raylib.Raylib.*;
 public class Main {
     public static void main(String[] args) {
         InitWindow(1280, 720, "Fantasy Battle Sim");
-        SetTargetFPS(240);
+        SetTargetFPS(60);
         Camera2D camera = new Camera2D()
                 .zoom(5.0f);
 
-        Texture tex = LoadTexture("resources/pingas.png");
+        Texture tex = ResourceManager.GetTexture("resources/pingas.png");
 
         Vector2 position = new Vector2();
         position.x(camera.zoom() / 2.0f).y(camera.zoom() / 2.0f);
@@ -29,7 +29,7 @@ public class Main {
             EndDrawing();
         }
 
-        UnloadTexture(tex);
+        ResourceManager.UnloadAllAssets();
 
         CloseWindow();
     }
