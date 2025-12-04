@@ -4,6 +4,9 @@ import engine.Text;
 
 import static com.raylib.Jaylib.*;
 
+import entity.Character;
+import entity.Monster;
+
 import java.util.HashSet;
 
 public class Main {
@@ -28,28 +31,51 @@ public class Main {
         InitWindow(1280, 720, "Fantasy Battle Sim");
         SetTargetFPS(60);
         {
-            GameObject newObj = new GameObject();
-            newObj.transform.position.x(100);
-            newObj.transform.scale = 0.4f;
-            newObj.AddComponent(new SpriteRenderer(
-                    ResourceManager.GetTexture("resources/pingas.png"),
-                    RED
+            Character character = new Character("This!", 10.0, 5.0, 2.0);
+            character.transform.position.x(10).y(10);
+            character.transform.scale = 0.2f;
+            character.AddComponent(new SpriteRenderer(
+                    ResourceManager.GetTexture("resources/pingas.png"), WHITE
             ));
 
-            objects.add(newObj);
-        }
-        {
-            GameObject newObj = new GameObject();
-            newObj.transform.position.x(225).y(300);
+            objects.add(character);
 
-            Text text = new Text();
-            text.text = "pingas";
-            text.font = ResourceManager.GetFont("resources/Comic Sans MS.ttf");
-            text.tint = WHITE;
-            text.baseFontSize = 48;
-            newObj.AddComponent(text);
+            Monster monster = new Monster("Billy", 100.0, 1000.0);
+            monster.transform.position.x(10).y(250);
+            monster.transform.scale = 0.2f;
+            monster.AddComponent(new SpriteRenderer(
+                    ResourceManager.GetTexture("resources/pingas.png"), RED
+            ));
 
-            objects.add(newObj);
+            objects.add(monster);
+
+            GameObject characterTextObj = new GameObject();
+            characterTextObj.transform.position.x(10).y(150);
+
+            Text characterText = new Text();
+            characterText.text = String.format("Character [Name: %s, Health: %.2f, Defense: %.2f, Attack Damage: %.2f]",
+                    character.getName(), character.getHealth(), character.getDefense(), character.getAttackDamage());
+            characterText.font = ResourceManager.GetFont("resources/Comic Sans MS.ttf");
+            characterText.tint = WHITE;
+            characterText.baseFontSize = 25;
+            characterText.spacing = 3.5f;
+            characterTextObj.AddComponent(characterText);
+
+            objects.add(characterTextObj);
+
+            GameObject monsterTextObj = new GameObject();
+            monsterTextObj.transform.position.x(10).y(400);
+
+            Text monsterText = new Text();
+            monsterText.text = String.format("Monster [Name: %s, Health: %.2f, Attack Damage: %.2f]",
+                    monster.getName(), monster.getHealth(), monster.getAttackDamage());
+            monsterText.font = ResourceManager.GetFont("resources/Comic Sans MS.ttf");
+            monsterText.tint = WHITE;
+            monsterText.baseFontSize = 25;
+            monsterText.spacing = 3.5f;
+            monsterTextObj.AddComponent(monsterText);
+
+            objects.add(monsterTextObj);
         }
     }
 
