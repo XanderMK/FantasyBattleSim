@@ -1,5 +1,9 @@
+import engine.GameObject;
+import engine.SpriteRenderer;
+import engine.Text;
+
 import static com.raylib.Jaylib.*;
-import static com.raylib.Raylib.*;
+
 import java.util.HashSet;
 
 public class Main {

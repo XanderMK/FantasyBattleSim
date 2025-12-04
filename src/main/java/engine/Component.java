@@ -1,3 +1,5 @@
+package engine;
+
 public abstract class Component {
     public String type;
     public GameObject parent;

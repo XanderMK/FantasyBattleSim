@@ -1,3 +1,5 @@
+package engine;
+
 import static com.raylib.Raylib.*;
 
 public class SpriteRenderer extends Component {
@@ -5,10 +7,10 @@ public class SpriteRenderer extends Component {
     public Color tint = new Color().r((byte)255).g((byte)255).b((byte)255).a((byte)255);
 
     public SpriteRenderer() {
-        type = "SpriteRenderer";
+        type = "engine.SpriteRenderer";
     }
     public SpriteRenderer(Texture texture, Color tint) {
-        type = "SpriteRenderer";
+        type = "engine.SpriteRenderer";
         this.texture = texture;
         this.tint = tint;
     }

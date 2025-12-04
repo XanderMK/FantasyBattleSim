@@ -1,3 +1,5 @@
+package engine;
+
 import java.util.HashSet;
 
 public class GameObject {

@@ -1,3 +1,5 @@
+package engine;
+
 import static com.raylib.Raylib.*;
 
 public class Text extends Component {
@@ -8,10 +10,10 @@ public class Text extends Component {
     public Color tint = new Color().r((byte)255).g((byte)255).b((byte)255).a((byte)255);
 
     public Text() {
-        type = "Text";
+        type = "engine.Text";
     }
     public Text(String text, Font font, float baseFontSize, float spacing, Color tint) {
-        type = "Text";
+        type = "engine.Text";
         this.text = text;
         this.font = font;
         this.baseFontSize = baseFontSize;
