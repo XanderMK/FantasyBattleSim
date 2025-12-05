@@ -3,11 +3,10 @@ package scene;
 import engine.GameObject;
 import engine.SpriteRenderer;
 import engine.ResourceManager;
-import engine.Text;
+import entity.BattleMenu;
 import entity.Character;
 import entity.Monster;
 
-import static com.raylib.Jaylib.RED;
 import static com.raylib.Jaylib.WHITE;
 import static com.raylib.Raylib.*;
 
@@ -15,6 +14,7 @@ public class BattleScene extends Scene {
 
     private Character[] characters;
     private Monster[] monsters;
+    private BattleMenu battleMenu;
 
     private float x = 0.0f;
 
@@ -35,8 +35,8 @@ public class BattleScene extends Scene {
 
         for (byte i = 0; i < characters.length; i++) {
             // Temporary position
-            characters[i].transform.position.x(10).y(150 + (175 * i));
-            characters[i].transform.scale = 0.2f;
+            characters[i].transform.localPosition.x(10).y(150 + (175 * i));
+            characters[i].transform.localScale = 0.2f;
 
             objects.add(characters[i]);
         }
@@ -59,11 +59,14 @@ public class BattleScene extends Scene {
         ));
 
         for (byte i = 0; i < monsters.length; i++) {
-            monsters[i].transform.position.x(1090).y(75 + (180 * i));
-            monsters[i].transform.scale = 0.2f;
+            monsters[i].transform.localPosition.x(1090).y(75 + (180 * i));
+            monsters[i].transform.localScale = 0.2f;
 
             objects.add(monsters[i]);
         }
+
+        battleMenu = new BattleMenu();
+        objects.add(battleMenu);
     }
 
     @Override
@@ -73,7 +76,7 @@ public class BattleScene extends Scene {
 
         // Temporary :)
         x += 10.0f + (5.0f * GetFrameTime());
-        characters[0].transform.position.x(x);
+        characters[0].transform.localPosition.x(x);
     }
 
 }

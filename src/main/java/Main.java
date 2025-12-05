@@ -1,12 +1,12 @@
-import engine.GameObject;
 import engine.ResourceManager;
 import scene.BattleScene;
+import scene.Scene;
 
 import static com.raylib.Jaylib.*;
 
 public class Main {
 
-    private static BattleScene battleScene;
+    private static Scene currentScene;
 
     public static void main(String[] args) {
         Init();
@@ -28,17 +28,17 @@ public class Main {
         SetTargetFPS(60);
 
         // Init scenes
-        battleScene = new BattleScene();
-        battleScene.Init();
+        currentScene = new BattleScene();
+        currentScene.Init();
     }
 
     private static void Update() {
         // TODO: If we want multiple scenes move this to an ArrayList or something of scenes instead
-        battleScene.Update();
+        currentScene.Update();
     }
 
     private static void Render() {
-        battleScene.Render();
+        currentScene.Render();
         // Remove FPS counter at some point
         DrawFPS(20, 20);
     }

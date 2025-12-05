@@ -23,6 +23,6 @@ public class Text extends Component {
 
     public void Update() {}
     public void Render() {
-        DrawTextPro(font, text, parent.transform.position, new Vector2().x(0).y(0), parent.transform.rotation, baseFontSize * parent.transform.scale, spacing, tint);
+        DrawTextPro(font, text, parentObject.transform.GetGlobalPosition(), new Vector2().x(0).y(0), parentObject.transform.GetGlobalRotation(), baseFontSize * parentObject.transform.GetGlobalScale(), spacing, tint);
     }
 }

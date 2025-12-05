@@ -17,6 +17,6 @@ public class SpriteRenderer extends Component {
 
     public void Update() {}
     public void Render() {
-        DrawTextureEx(texture, parent.transform.position, parent.transform.rotation, parent.transform.scale, tint);
+        DrawTextureEx(texture, parentObject.transform.GetGlobalPosition(), parentObject.transform.GetGlobalRotation(), parentObject.transform.GetGlobalScale(), tint);
     }
 }
