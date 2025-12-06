@@ -3,6 +3,7 @@ package engine;
 import static com.raylib.Jaylib.RED;
 import static com.raylib.Jaylib.WHITE;
 import static com.raylib.Raylib.*;
+import static main.Main.VIRTUAL_RATIO;
 
 public class ImageButton extends Component {
 
@@ -39,8 +40,12 @@ public class ImageButton extends Component {
     public void Update() {
         pressed = false;
 
+        Vector2 modifiedMousePosition = GetMousePosition();
+        modifiedMousePosition.x(modifiedMousePosition.x() / VIRTUAL_RATIO);
+        modifiedMousePosition.y(modifiedMousePosition.y() / VIRTUAL_RATIO);
+
         if (visible) {
-            if (CheckCollisionPointRec(GetMousePosition(), new Rectangle()
+            if (CheckCollisionPointRec(modifiedMousePosition, new Rectangle()
                     .x(parentObject.transform.localPosition.x() + offX)
                     .y(parentObject.transform.localPosition.y() + offY)
                     .width(texture.width() * parentObject.transform.localScale)
@@ -59,6 +64,12 @@ public class ImageButton extends Component {
                     .x(parentObject.transform.localPosition.x() + offX)
                     .y(parentObject.transform.localPosition.y() + offY), parentObject.transform.localRotation, parentObject.transform.localScale, WHITE);
         }
+        /*
+        DrawRectangleRec(new Rectangle()
+                .x(parentObject.transform.localPosition.x() + offX)
+                .y(parentObject.transform.localPosition.y() + offY)
+                .width(texture.width() * parentObject.transform.localScale)
+                .height(texture.height() * parentObject.transform.localScale), new Color().r(RED.r()).g(RED.g()).b(RED.b()).a((byte) 20));*/
     }
 
     public boolean isPressed() {

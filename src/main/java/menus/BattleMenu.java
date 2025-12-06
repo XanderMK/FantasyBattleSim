@@ -4,6 +4,7 @@ import engine.*;
 
 import static com.raylib.Jaylib.BLACK;
 import static com.raylib.Raylib.*;
+import static main.Main.*;
 
 public class BattleMenu extends GameObject {
 
@@ -36,12 +37,12 @@ public class BattleMenu extends GameObject {
             buttons.AddComponent(face);
         }
 
-        buttons.transform.SetGlobalPosition(new Vector2().x(GetRenderWidth() - WIDTH - ((float) BORDER_SIZE / 2))
-                .y(GetRenderHeight() - HEIGHT - ((float) BORDER_SIZE / 2)));
+        buttons.transform.SetGlobalPosition(new Vector2().x(VIRTUAL_WIDTH - WIDTH - ((float) BORDER_SIZE / 2))
+                .y(VIRTUAL_HEIGHT - HEIGHT - ((float) BORDER_SIZE / 2)));
 
         GameObject buttonBackground = new GameObject();
         buttonBackground.AddComponent(new RectangleRenderer(WIDTH + BORDER_SIZE, HEIGHT + BORDER_SIZE, BLACK, false));
-        buttonBackground.transform.SetGlobalPosition(new Vector2().x(GetRenderWidth() - WIDTH - BORDER_SIZE).y(GetRenderHeight() - HEIGHT - BORDER_SIZE));
+        buttonBackground.transform.SetGlobalPosition(new Vector2().x(VIRTUAL_WIDTH - WIDTH - BORDER_SIZE).y(VIRTUAL_HEIGHT - HEIGHT - BORDER_SIZE));
         AddChild(buttonBackground);
     }
 

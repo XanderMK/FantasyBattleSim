@@ -4,6 +4,8 @@ import engine.DialogueBox;
 import engine.GameObject;
 import engine.SpriteRenderer;
 import engine.ResourceManager;
+import static main.Main.*;
+
 import menus.BattleMenu;
 import entity.Character;
 import entity.Monster;
@@ -83,7 +85,7 @@ public class BattleScene extends Scene {
         objects.add(battleMenu);
 
         dialogue = new DialogueBox(DIALOGUE_SPEED);
-        dialogue.transform.SetGlobalPosition(new Vector2().x(30).y(GetRenderHeight() - 120));
+        dialogue.transform.SetGlobalPosition(new Vector2().x(30).y(VIRTUAL_HEIGHT - 120));
         objects.add(dialogue);
 
         // TODO: Make a system that controls dialogue boxes
