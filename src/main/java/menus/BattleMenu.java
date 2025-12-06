@@ -16,16 +16,19 @@ public class BattleMenu extends GameObject {
     private final int BUTTON_WIDTH = WIDTH / 2;
     private final int BUTTON_HEIGHT = HEIGHT / 2;
 
-    private GameObject buttons;
+    private GameObject faceButtonObj;
     private ImageButton[] faceButtons;
+
+    private GameObject attackButtonObj;
+    private Button[] attackButtons;
 
     public BattleMenu() {
         super();
 
-        buttons = new GameObject();
-        AddChild(buttons);
+        faceButtonObj = new GameObject();
+        AddChild(faceButtonObj);
 
-        buttons.transform.localScale = 0.15f;
+        faceButtonObj.transform.localScale = 0.15f;
 
         faceButtons = new ImageButton[]{
                 new ImageButton("resources/buttons/Attack.png"),
@@ -34,21 +37,35 @@ public class BattleMenu extends GameObject {
                 new ImageButton("resources/buttons/Flee.png", BUTTON_WIDTH, BUTTON_HEIGHT)
         };
         for (ImageButton face : faceButtons) {
-            buttons.AddComponent(face);
+            faceButtonObj.AddComponent(face);
         }
 
-        buttons.transform.SetGlobalPosition(new Vector2().x(VIRTUAL_WIDTH - WIDTH - ((float) BORDER_SIZE / 2))
+        faceButtonObj.transform.SetGlobalPosition(new Vector2().x(VIRTUAL_WIDTH - WIDTH - ((float) BORDER_SIZE / 2))
                 .y(VIRTUAL_HEIGHT - HEIGHT - ((float) BORDER_SIZE / 2)));
 
         GameObject buttonBackground = new GameObject();
         buttonBackground.AddComponent(new RectangleRenderer(WIDTH + BORDER_SIZE, HEIGHT + BORDER_SIZE, BLACK, false));
         buttonBackground.transform.SetGlobalPosition(new Vector2().x(VIRTUAL_WIDTH - WIDTH - BORDER_SIZE).y(VIRTUAL_HEIGHT - HEIGHT - BORDER_SIZE));
         AddChild(buttonBackground);
+
+        attackButtonObj = new GameObject();
+        AddChild(attackButtonObj);
+        attackButtonObj.transform.SetGlobalPosition(new Vector2().x(150).y(VIRTUAL_HEIGHT - 90));
+
+        attackButtons = new Button[]{
+                new Button("Normal Attack", 300, 30),
+                new Button("Mana Attack", 300, 30, 350, 0)
+        };
+        for (Button button : attackButtons) {
+            attackButtonObj.AddComponent(button);
+        }
+        disableAttackButtons();
     }
 
     @Override
     public void Update() {
-        buttons.Update();
+        faceButtonObj.Update();
+        attackButtonObj.Update();
     }
 
     public ImageButton[] getFaceButtons() {
@@ -57,6 +74,26 @@ public class BattleMenu extends GameObject {
 
     public ImageButton getFaceButtonAt(int i) {
         return faceButtons[i];
+    }
+
+    public Button[] getAttackButtons() {
+        return attackButtons;
+    }
+
+    public Button getAttackButtonAt(int i) {
+        return attackButtons[i];
+    }
+
+    public void enableAttackButtons() {
+        for (Button button : attackButtons) {
+            button.visible = true;
+        }
+    }
+
+    public void disableAttackButtons() {
+        for (Button button : attackButtons) {
+            button.visible = false;
+        }
     }
 
 }

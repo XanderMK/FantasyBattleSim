@@ -7,12 +7,15 @@ public class Character extends Entity {
     private double defense;
     private final double MAX_DEFENSE;
 
+    private boolean defending = false;
+
     private double mana;
     private final double MAX_MANA;
 
     public Character(String name, double health, double defense, double mana, double attackDamage) {
         super(name, health, attackDamage);
         this.defense = defense;
+        this.mana = mana;
 
         MAX_DEFENSE = defense;
         MAX_MANA = mana;
@@ -65,6 +68,14 @@ public class Character extends Entity {
 
     public double getMaxMana() {
         return MAX_MANA;
+    }
+
+    public boolean isDefending() {
+        return defending;
+    }
+
+    public void setDefending(boolean defending) {
+        this.defending = defending;
     }
 
 }

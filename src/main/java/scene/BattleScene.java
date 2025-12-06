@@ -1,15 +1,13 @@
 package scene;
 
-import engine.DialogueBox;
-import engine.GameObject;
-import engine.SpriteRenderer;
-import engine.ResourceManager;
+import engine.*;
+
 import static main.Main.*;
 
+import gameplay.BattleEngine;
 import menus.BattleMenu;
 import entity.Character;
 import entity.Monster;
-import menus.BattleMenuButtons;
 
 import java.util.Collections;
 
@@ -26,12 +24,16 @@ public class BattleScene extends Scene {
 
     private DialogueBox dialogue;
 
+    private BattleEngine battleEngine;
+
+    private Sound fxDead;
+
     @Override
     public void Init() {
         // Create character objects
         characters = new Character[]{
-                new Character("Mohammed", 20.0, 10.0, 5.0, 7.5),
-                new Character("Darwin the Wizard", 15.0, 5.0, 2.5, 5.0)
+                new Character("Mohammed", 30.0, 10.0, 6.0, 7.5),
+                new Character("Darwin the Wizard", 20.0, 5.0, 4.0, 5.0)
         };
 
         characters[0].AddComponent(new SpriteRenderer(
@@ -52,9 +54,9 @@ public class BattleScene extends Scene {
 
         // Create monster objects
         monsters = new Monster[]{
-                new Monster("Billy", 50.0, 10.0),
-                new Monster("Goblin 1", 30.0, 5.0),
-                new Monster("Goblin 2", 30.0, 5.0)
+                new Monster("Billy", 50.0, 8.0),
+                new Monster("Goblin 1", 30.0, 4.0),
+                new Monster("Goblin 2", 30.0, 4.0)
         };
 
         for (byte i = 1; i < monsters.length; i++) {
@@ -89,7 +91,12 @@ public class BattleScene extends Scene {
         objects.add(dialogue);
 
         // TODO: Make a system that controls dialogue boxes
-        dialogue.promptText("muhahauaaahahahaaahaaha!! i have stolen your keyboards, Mohammed. Come get them if you can!!");
+        //dialogue.promptText("muhahauaaahahahaaahaaha!! i have stolen your keyboards, Mohammed. Come get them if you can!!");
+
+        battleEngine = new BattleEngine(characters, monsters, battleMenu, dialogue);
+        battleEngine.startBattle();
+
+        fxDead = ResourceManager.GetSound("resources/sfx/dead.wav");
     }
 
     @Override
@@ -97,18 +104,21 @@ public class BattleScene extends Scene {
         for (GameObject gameObject : objects)
             gameObject.Update();
 
-        // Temporary :)
-        if (battleMenu.getFaceButtonAt(BattleMenuButtons.FACE_ATTACK.index).isPressed()) {
-            dialogue.promptText("This is the attack button. It will have normal attacks and mana attacks.");
+        battleEngine.Update();
+        GuiSetStyle(DEFAULT, TEXT_SIZE, 20);
+
+        for (Character character : characters) {
+            if (!character.isAlive() && objects.contains(character)) {
+                objects.remove(character);
+                PlaySound(fxDead);
+            }
         }
-        if (battleMenu.getFaceButtonAt(BattleMenuButtons.FACE_ITEM.index).isPressed()) {
-            dialogue.promptText("This is the item button. I don't know what items we'll have at this point, there are none :)");
-        }
-        if (battleMenu.getFaceButtonAt(BattleMenuButtons.FACE_DEFEND.index).isPressed()) {
-            dialogue.promptText("This is the defense button. Defense...");
-        }
-        if (battleMenu.getFaceButtonAt(BattleMenuButtons.FACE_FLEE.index).isPressed()) {
-            dialogue.promptText("There is no escape.");
+
+        for (Monster monster : monsters) {
+            if (!monster.isAlive() && objects.contains(monster)) {
+                objects.remove(monster);
+                PlaySound(fxDead);
+            }
         }
     }
 

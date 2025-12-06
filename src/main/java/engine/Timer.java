@@ -32,4 +32,7 @@ public class Timer {
         return GetTime() - startTime;
     }
 
+    public boolean isPlaying() {
+        return playing;
+    }
 }
