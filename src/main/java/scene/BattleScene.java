@@ -28,8 +28,8 @@ public class BattleScene extends Scene {
     public void Init() {
         // Create character objects
         characters = new Character[]{
-                new Character("Mohammed", 20.0, 10.0, 7.5),
-                new Character("Darwin the Wizard", 15.0, 5.0, 5.0)
+                new Character("Mohammed", 20.0, 10.0, 5.0, 7.5),
+                new Character("Darwin the Wizard", 15.0, 5.0, 2.5, 5.0)
         };
 
         characters[0].AddComponent(new SpriteRenderer(
@@ -82,7 +82,7 @@ public class BattleScene extends Scene {
         battleMenu = new BattleMenu();
         objects.add(battleMenu);
 
-        dialogue = new DialogueBox(0.03);
+        dialogue = new DialogueBox(DIALOGUE_SPEED);
         dialogue.transform.SetGlobalPosition(new Vector2().x(30).y(GetRenderHeight() - 120));
         objects.add(dialogue);
 

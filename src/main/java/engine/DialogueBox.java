@@ -36,6 +36,7 @@ public class DialogueBox extends GameObject {
     public DialogueBox(double timeBetweenChar) {
         this.timeBetweenChar = timeBetweenChar;
 
+        timer = new Timer(timeBetweenChar);
         fxTextMove = ResourceManager.GetSound("resources/sfx/textmove.wav");
         fxClick = ResourceManager.GetSound("resources/sfx/click.wav");
     }
@@ -46,7 +47,6 @@ public class DialogueBox extends GameObject {
         this.line = line;
 
         fullLine = new StringBuilder();
-        timer = new Timer(timeBetweenChar);
         nextChar = 0;
         textLine = 0;
 
@@ -111,6 +111,7 @@ public class DialogueBox extends GameObject {
     public void Render() {
         // Annoying bug was annoying me. Stupid fix. Sorry.
         // - Skyler
+        if (outline == null || base == null || text == null) return;
         if (outline.parentObject != null && base.parentObject != null && text.parentObject != null) {
             outline.Render();
             base.Render();
