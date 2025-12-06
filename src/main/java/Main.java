@@ -27,6 +27,9 @@ public class Main {
         InitWindow(1280, 720, "Fantasy Battle Sim");
         SetTargetFPS(60);
 
+        InitAudioDevice();
+        SetMasterVolume(0.5f);
+
         // Init scenes
         currentScene = new BattleScene();
         currentScene.Init();
@@ -45,6 +48,7 @@ public class Main {
 
     private static void Exit() {
         ResourceManager.UnloadAllAssets();
+        CloseAudioDevice();
         CloseWindow();
     }
 }

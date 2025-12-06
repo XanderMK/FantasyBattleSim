@@ -37,6 +37,11 @@ public class GameObject {
         component.parentObject = this;
     }
 
+    public void RemoveComponent(Component component) {
+        components.remove(component);
+        component.parentObject = null;
+    }
+
     public Component GetComponent(String type) {
         for (Component c : components) {
             if (c.type.equals(type))
