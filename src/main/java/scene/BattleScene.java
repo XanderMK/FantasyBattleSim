@@ -5,9 +5,14 @@ import engine.*;
 import static main.Main.*;
 
 import gameplay.BattleEngine;
+import item.FireballItem;
+import item.HealthItem;
+import item.Item;
+import item.ManaItem;
 import menus.BattleMenu;
 import entity.Character;
 import entity.Monster;
+import menus.ItemMenu;
 
 import java.util.Collections;
 
@@ -24,16 +29,20 @@ public class BattleScene extends Scene {
 
     private DialogueBox dialogue;
 
+    private ItemMenu itemMenu;
+
     private BattleEngine battleEngine;
 
     private Sound fxDead;
+
+    // TODO: The game is too hard rn, maybe even impossible without extreme luck. Must balance.
 
     @Override
     public void Init() {
         // Create character objects
         characters = new Character[]{
-                new Character("Mohammed", 30.0, 10.0, 6.0, 7.5),
-                new Character("Darwin the Wizard", 20.0, 5.0, 4.0, 5.0)
+                new Character("Mohammed", 35.0, 10.0, 6.0, 10.0),
+                new Character("Darwin the Wizard", 25.0, 5.0, 4.0, 7.5)
         };
 
         characters[0].AddComponent(new SpriteRenderer(
@@ -90,10 +99,29 @@ public class BattleScene extends Scene {
         dialogue.transform.SetGlobalPosition(new Vector2().x(30).y(VIRTUAL_HEIGHT - 120));
         objects.add(dialogue);
 
-        // TODO: Make a system that controls dialogue boxes
-        //dialogue.promptText("muhahauaaahahahaaahaaha!! i have stolen your keyboards, Mohammed. Come get them if you can!!");
+        // This is a fix to a bug I do not understand. Somehow when I instantiate the inventory object
+        // in the Character class some of the assets do not appear. Why? I don't know. This fixes it
+        // by instantiating the object later in the method. I seriously cannot comprehend why this
+        // happens. But whatever, it works now. :)
+        // - Skyler
+        characters[0].createInventory(new Item[]{
+                new ManaItem(),
+                new ManaItem(),
+                new HealthItem()
+        });
+        characters[1].createInventory(new Item[]{
+                new HealthItem(),
+                new ManaItem(),
+                new ManaItem(),
+                new FireballItem()
+        });
 
-        battleEngine = new BattleEngine(characters, monsters, battleMenu, dialogue);
+        itemMenu = new ItemMenu();
+        itemMenu.transform.localPosition.y(VIRTUAL_HEIGHT - itemMenu.getHeight());
+        itemMenu.active = false;
+        objects.add(itemMenu);
+
+        battleEngine = new BattleEngine(characters, monsters, battleMenu, dialogue, itemMenu);
         battleEngine.startBattle();
 
         fxDead = ResourceManager.GetSound("resources/sfx/dead.wav");

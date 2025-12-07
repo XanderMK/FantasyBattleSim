@@ -36,6 +36,20 @@ public class ImageButton extends Component {
         texture = ResourceManager.GetTexture(imagePath);
     }
 
+    public ImageButton(Texture texture) {
+        type = "engine.ImageButton";
+
+        this.texture = texture;
+    }
+
+    public ImageButton(Texture texture, float offX, float offY) {
+        type = "engine.ImageButton";
+
+        this.texture = texture;
+        this.offX = offX;
+        this.offY = offY;
+    }
+
     @Override
     public void Update() {
         pressed = false;

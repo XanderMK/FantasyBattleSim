@@ -18,7 +18,9 @@ public abstract class Entity extends GameObject {
     protected boolean alive = true;
 
     private Timer timer;
-    private double moveDistance = 20.0f;
+
+    private final double MOVE_DISTANCE_CONST = 20.0;
+    private double moveDistance = MOVE_DISTANCE_CONST;
 
     private Sound fxHit;
 
@@ -47,6 +49,7 @@ public abstract class Entity extends GameObject {
     }
 
     public void attackAnimation(boolean forward) {
+        moveDistance = MOVE_DISTANCE_CONST;
         if (!forward) moveDistance = -moveDistance;
 
         timer = new Timer(0.1f);

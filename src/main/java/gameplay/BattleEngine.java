@@ -1,13 +1,20 @@
 package gameplay;
 
 import engine.DialogueBox;
+import engine.ImageButton;
+import engine.ResourceManager;
 import engine.Timer;
 import entity.Character;
 import entity.Monster;
+import item.Item;
 import menus.BattleMenu;
 import menus.BattleMenuButtons;
+import menus.ItemMenu;
 
+import java.util.Arrays;
 import java.util.Random;
+
+import static com.raylib.Raylib.*;
 
 public class BattleEngine {
 
@@ -18,10 +25,13 @@ public class BattleEngine {
     private Monster[] monsters;
     private BattleMenu battleMenu;
     private DialogueBox dialogueBox;
+    private ItemMenu itemMenu;
 
     private boolean waiting = false;
     private boolean methodChosen = false;
     private boolean monsterAttacked = false;
+    private boolean usedItem = false;
+    private byte itemIndex = -1;
     private byte currentCharacter = 0;
     private byte currentMonster = -1;
 
@@ -30,16 +40,21 @@ public class BattleEngine {
 
     private BattleState battleState;
 
-    public BattleEngine(Character[] characters, Monster[] monsters, BattleMenu battleMenu, DialogueBox dialogueBox) {
+    private Sound fxItem;
+
+    public BattleEngine(Character[] characters, Monster[] monsters, BattleMenu battleMenu, DialogueBox dialogueBox, ItemMenu itemMenu) {
         this.characters = characters;
         this.monsters = monsters;
         this.battleMenu = battleMenu;
         this.dialogueBox = dialogueBox;
+        this.itemMenu = itemMenu;
 
         timer = new Timer(2.0f);
         random = new Random();
 
         battleState = BattleState.NOT_STARTED;
+
+        fxItem = ResourceManager.GetSound("resources/sfx/item.wav");
     }
 
     public void startBattle() {
@@ -47,14 +62,20 @@ public class BattleEngine {
         waiting = false;
         methodChosen = false;
         monsterAttacked = false;
+        usedItem = false;
+        itemIndex = -1;
         currentCharacter = 0;
         currentMonster = -1;
     }
 
-    // TODO: Implement critical attacks and miss attacks for monsters
+    // This logic feels like its being held up by duct tape and my hopes and dreams, but
+    // somehow it works. I think. There's probably some soul-destroying bug hiding
+    // in the code somewhere. Somebody needs to test this more other than me.
+    // - Skyler
+
+    // TODO: Implement critical attacks and miss attacks for monsters (this is *super* important with the current balance... maybe not the criticals though)
     // TODO: Monsters and characters need balancing
     // TODO: Truncate visual numerical decimals to 2 max
-    // TODO: Implement items
 
     public void Update() {
         if (battleState.equals(BattleState.ONGOING) && currentCharacter != -1 && currentMonster == -1) {
@@ -74,6 +95,8 @@ public class BattleEngine {
                 } while (!monsters[attackingMonster].isAlive());
 
                 if (battleMenu.getFaceButtonAt(BattleMenuButtons.FACE_ATTACK.index).isPressed()) {
+                    if (itemMenu.active) return;
+
                     if (battleMenu.getAttackButtonAt(0).visible) {
                         battleMenu.disableAttackButtons();
                     } else {
@@ -115,7 +138,47 @@ public class BattleEngine {
                 if (battleMenu.getAttackButtonAt(0).visible) return;
 
                 if (battleMenu.getFaceButtonAt(BattleMenuButtons.FACE_ITEM.index).isPressed()) {
-                    dialogueBox.promptText("PLACEHOLDER: Implement items.");
+                    if (itemMenu.active) {
+                        itemMenu.closeInventory();
+                    } else {
+                        itemMenu.displayInventory(characters[currentCharacter].getInventory());
+                    }
+                }
+
+                if (itemMenu.active) {
+                    byte i = 0;
+                    for (ImageButton button : itemMenu.getImageButton()) {
+                        if (button == null) {
+                            i++;
+                            continue;
+                        }
+
+                        if (button.isPressed()) {
+                            itemMenu.closeInventory();
+
+                            dialogueBox.promptText(characters[currentCharacter].getName() + " used " + characters[currentCharacter].getInventory().getItem(i).getName() +
+                                    "! " + characters[currentCharacter].getInventory().getItem(i).getDescription());
+
+                            if (characters[currentCharacter].getInventory().getItem(i).getType().equals("Character")) {
+                                characters[currentCharacter].getInventory().getItem(i).effect(characters[currentCharacter]);
+                            } else {
+                                characters[currentCharacter].getInventory().getItem(i).effect(monsters[attackingMonster]);
+                            }
+
+                            PlaySound(fxItem);
+                            itemIndex = i;
+                            usedItem = true;
+                        }
+
+                        i++;
+                    }
+                }
+
+                if (!dialogueBox.isVisible() && usedItem) {
+                    characters[currentCharacter].getInventory().removeItem(characters[currentCharacter].getInventory().getItem(itemIndex));
+                    usedItem = false;
+
+                    methodChosen = true;
                 }
 
                 if (battleMenu.getFaceButtonAt(BattleMenuButtons.FACE_DEFEND.index).isPressed()) {
