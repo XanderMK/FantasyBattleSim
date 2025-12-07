@@ -13,6 +13,7 @@ public class ImageButton extends Component {
     public Texture texture;
 
     private boolean pressed;
+    private boolean hovered;
     public boolean visible = true;
 
     public ImageButton() {
@@ -65,9 +66,12 @@ public class ImageButton extends Component {
                     .y(parentObject.transform.localPosition.y() + offY)
                     .width(texture.width() * parentObject.transform.localScale)
                     .height(texture.height() * parentObject.transform.localScale))) {
+                hovered = true;
                 if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
                     pressed = true;
                 }
+            } else {
+                hovered = false;
             }
         }
     }
@@ -79,15 +83,14 @@ public class ImageButton extends Component {
                     .x(parentObject.transform.localPosition.x() + offX)
                     .y(parentObject.transform.localPosition.y() + offY), parentObject.transform.localRotation, parentObject.transform.localScale, WHITE);
         }
-        /*
-        DrawRectangleRec(new Rectangle()
-                .x(parentObject.transform.localPosition.x() + offX)
-                .y(parentObject.transform.localPosition.y() + offY)
-                .width(texture.width() * parentObject.transform.localScale)
-                .height(texture.height() * parentObject.transform.localScale), new Color().r(RED.r()).g(RED.g()).b(RED.b()).a((byte) 20));*/
     }
 
     public boolean isPressed() {
         return pressed;
     }
+
+    public boolean isHovered() {
+        return hovered;
+    }
+
 }

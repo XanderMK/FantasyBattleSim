@@ -1,13 +1,18 @@
 package menus;
 
 import engine.GameObject;
+import engine.components.Component;
 import engine.components.ImageButton;
 import engine.components.RectangleRenderer;
+import engine.components.Text;
 import item.Inventory;
 import item.Item;
 
+import static com.raylib.Jaylib.WHITE;
+import static com.raylib.Raylib.*;
 import static com.raylib.Jaylib.DARKGRAY;
 import static main.Main.VIRTUAL_HEIGHT;
+import static main.Main.VIRTUAL_RATIO;
 
 public class ItemMenu extends GameObject {
 
@@ -19,14 +24,25 @@ public class ItemMenu extends GameObject {
 
     private ImageButton[] imageButton;
 
+    private GameObject descriptionObj;
+    private Text descriptionText;
+
+    private Inventory inventory;
+
     public ItemMenu() {
         background = new RectangleRenderer(WIDTH, HEIGHT, DARKGRAY, false);
 
         AddComponent(background);
         items = new GameObject();
+
+        descriptionObj = new GameObject();
+        descriptionText = new Text("", GetFontDefault(), 20, 2.0f, WHITE);
+
+        descriptionObj.AddComponent(descriptionText);
     }
 
     public void displayInventory(Inventory inventory) {
+        this.inventory = inventory;
         active = true;
 
         imageButton = new ImageButton[inventory.getMaxItems()];
@@ -39,7 +55,7 @@ public class ItemMenu extends GameObject {
                 continue;
             }
 
-            imageButton[i] = new ImageButton(item.getTexture(), 40.0f + (j * item.getTexture().width() * item.transform.localScale * 2), VIRTUAL_HEIGHT - ((float) HEIGHT / 1.4f));
+            imageButton[i] = new ImageButton(item.getTexture(), 40.0f + (j * 12 * item.transform.localScale * 2), VIRTUAL_HEIGHT - ((float) HEIGHT / 1.4f));
             items.AddComponent(imageButton[i]);
             imageButton[i].parentObject.transform.localScale = item.transform.localScale;
             i++;
@@ -47,6 +63,29 @@ public class ItemMenu extends GameObject {
         }
 
         AddChild(items);
+        AddChild(descriptionObj);
+    }
+
+    @Override
+    public void Update() {
+        if (!active) return;
+        for (Component c : components)
+            c.Update();
+        for (GameObject g : children)
+            g.Update();
+
+        for (byte i = 0; i < imageButton.length; i++) {
+            if (imageButton[i] == null) continue;
+
+            if (imageButton[i].isHovered()) {
+                descriptionText.text = inventory.getItem(i).getDescription();
+                break;
+            } else {
+                descriptionText.text = "";
+            }
+        }
+
+        descriptionObj.transform.SetGlobalPosition(new Vector2().x((GetMouseX() + 20) / VIRTUAL_RATIO).y((GetMouseY() + 20) / VIRTUAL_RATIO));
     }
 
     public void closeInventory() {
@@ -54,8 +93,10 @@ public class ItemMenu extends GameObject {
             if (img == null) continue;
 
             items.RemoveComponent(img);
+            descriptionText.text = "";
         }
 
+        inventory = null;
         active = false;
     }
 

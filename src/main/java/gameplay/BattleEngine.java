@@ -1,11 +1,9 @@
 package gameplay;
 
-import engine.components.DialogueBox;
-import engine.components.ImageButton;
+import engine.components.*;
 import engine.ResourceManager;
 import engine.Timer;
 import engine.components.Character;
-import engine.components.Monster;
 import menus.BattleMenu;
 import menus.BattleMenuButtons;
 import menus.ItemMenu;
@@ -71,8 +69,6 @@ public class BattleEngine {
     // in the code somewhere. Somebody needs to test this more other than me.
     // - Skyler
 
-    // TODO!!!: Fix crash when the last character/monster dies (index goes out of bounds because it tries moving to the next character/monster when there isn't one)
-
     // TODO: Implement critical attacks and miss attacks for monsters (this is *super* important with the current balance... maybe not the criticals though)
     // TODO: Monsters and characters need balancing
     // TODO: Truncate visual numerical decimals to 2 max
@@ -81,6 +77,11 @@ public class BattleEngine {
         if (battleState.equals(BattleState.ONGOING) && currentCharacter != -1 && currentMonster == -1) {
             if (!characters[currentCharacter].isAlive()) {
                 currentCharacter++;
+
+                if (currentCharacter >= characters.length) {
+                    currentCharacter = -1;
+                    currentMonster = 0;
+                }
                 return;
             }
 
@@ -208,6 +209,11 @@ public class BattleEngine {
         if (battleState.equals(BattleState.ONGOING) && currentMonster != -1 && currentCharacter == -1) {
             if (!monsters[currentMonster].isAlive()) {
                 currentMonster++;
+
+                if (currentMonster >= monsters.length) {
+                    currentMonster = -1;
+                    currentCharacter = 0;
+                }
                 return;
             }
 

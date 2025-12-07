@@ -137,6 +137,7 @@ public class BattleScene extends Scene {
         // by instantiating the object later in the method. I seriously cannot comprehend why this
         // happens. But whatever, it works now. :)
         // - Skyler
+        // EDIT: It was due to HashSets. Not deleting this comment because I think its funny.
         characters[0].createInventory(new Item[]{
                 new ManaItem(),
                 new ManaItem(),

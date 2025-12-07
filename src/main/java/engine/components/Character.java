@@ -15,6 +15,8 @@ public class Character extends Entity {
     private double mana;
     private final double MAX_MANA;
 
+    private long xp;
+
     private Inventory inventory;
 
     public Character(String name, double health, double defense, double mana, double attackDamage) {
@@ -93,6 +95,14 @@ public class Character extends Entity {
 
     public void setDefending(boolean defending) {
         this.defending = defending;
+    }
+
+    public long getXP() {
+        return xp;
+    }
+
+    public void increaseXP(long amount) {
+        xp += amount;
     }
 
     public Inventory getInventory() {
