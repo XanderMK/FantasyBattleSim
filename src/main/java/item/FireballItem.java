@@ -1,9 +1,9 @@
 package item;
 
 import engine.ResourceManager;
-import engine.SpriteRenderer;
-import entity.Character;
-import entity.Monster;
+import engine.components.SpriteRenderer;
+import engine.components.Character;
+import engine.components.Monster;
 
 import static com.raylib.Jaylib.WHITE;
 

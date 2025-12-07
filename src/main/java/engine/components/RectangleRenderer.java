@@ -1,4 +1,4 @@
-package engine;
+package engine.components;
 
 import static com.raylib.Jaylib.BLACK;
 import static com.raylib.Raylib.Color;
@@ -10,9 +10,9 @@ public class RectangleRenderer extends Component {
     public Color color = BLACK;
     public boolean drawFromCenter = true;
 
-    public RectangleRenderer() { type = "engine.RectangleRenderer"; }
+    public RectangleRenderer() { type = "engine.components.RectangleRenderer"; }
     public RectangleRenderer(int width, int height, Color color, boolean drawFromCenter) {
-        type = "engine.RectangleRenderer";
+        type = "engine.components.RectangleRenderer";
         this.width = width;
         this.height = height;
         this.color = color;

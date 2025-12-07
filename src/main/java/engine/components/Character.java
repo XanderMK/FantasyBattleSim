@@ -1,4 +1,4 @@
-package entity;
+package engine.components;
 
 import item.Inventory;
 import item.Item;
@@ -19,6 +19,8 @@ public class Character extends Entity {
 
     public Character(String name, double health, double defense, double mana, double attackDamage) {
         super(name, health, attackDamage);
+        type = "engine.components.Character";
+
         this.defense = defense;
         this.mana = mana;
 
@@ -96,5 +98,4 @@ public class Character extends Entity {
     public Inventory getInventory() {
         return inventory;
     }
-
 }

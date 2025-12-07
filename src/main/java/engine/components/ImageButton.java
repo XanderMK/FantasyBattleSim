@@ -1,6 +1,7 @@
-package engine;
+package engine.components;
 
-import static com.raylib.Jaylib.RED;
+import engine.ResourceManager;
+
 import static com.raylib.Jaylib.WHITE;
 import static com.raylib.Raylib.*;
 import static main.Main.VIRTUAL_RATIO;
@@ -15,11 +16,11 @@ public class ImageButton extends Component {
     public boolean visible = true;
 
     public ImageButton() {
-        type = "engine.ImageButton";
+        type = "engine.components.ImageButton";
     }
 
     public ImageButton(String imagePath) {
-        type = "engine.ImageButton";
+        type = "engine.components.ImageButton";
 
         this.imagePath = imagePath;
 
@@ -27,7 +28,7 @@ public class ImageButton extends Component {
     }
 
     public ImageButton(String imagePath, float offX, float offY) {
-        type = "engine.ImageButton";
+        type = "engine.components.ImageButton";
 
         this.imagePath = imagePath;
         this.offX = offX;
@@ -37,13 +38,13 @@ public class ImageButton extends Component {
     }
 
     public ImageButton(Texture texture) {
-        type = "engine.ImageButton";
+        type = "engine.components.ImageButton";
 
         this.texture = texture;
     }
 
     public ImageButton(Texture texture, float offX, float offY) {
-        type = "engine.ImageButton";
+        type = "engine.components.ImageButton";
 
         this.texture = texture;
         this.offX = offX;

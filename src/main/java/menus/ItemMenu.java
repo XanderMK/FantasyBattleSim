@@ -1,9 +1,8 @@
 package menus;
 
-import engine.Component;
 import engine.GameObject;
-import engine.ImageButton;
-import engine.RectangleRenderer;
+import engine.components.ImageButton;
+import engine.components.RectangleRenderer;
 import item.Inventory;
 import item.Item;
 

@@ -1,4 +1,4 @@
-package entity;
+package engine.components;
 
 public class Monster extends Entity {
 
@@ -6,6 +6,7 @@ public class Monster extends Entity {
 
     public Monster(String name, double health, double attackDamage) {
         super(name, health, attackDamage);
+        type = "engine.components.Monster";
     }
 
     @Override
@@ -16,5 +17,4 @@ public class Monster extends Entity {
     public double getAttackDamageMultiplier() {
         return ATTACK_DAMAGE_MULTIPLIER;
     }
-
 }

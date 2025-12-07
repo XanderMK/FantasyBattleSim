@@ -1,13 +1,13 @@
-package engine;
+package engine.components;
 
 import static com.raylib.Raylib.*;
 
 public class Transform extends Component {
     public Transform() {
-        type = "engine.Transform";
+        type = "engine.components.Transform";
     }
     public Transform(Vector2 localPosition, float localRotation, float localScale) {
-        type = "engine.Transform";
+        type = "engine.components.Transform";
         this.localPosition = localPosition;
         this.localRotation = localRotation;
         this.localScale = localScale;

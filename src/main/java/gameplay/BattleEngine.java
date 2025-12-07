@@ -1,17 +1,15 @@
 package gameplay;
 
-import engine.DialogueBox;
-import engine.ImageButton;
+import engine.components.DialogueBox;
+import engine.components.ImageButton;
 import engine.ResourceManager;
 import engine.Timer;
-import entity.Character;
-import entity.Monster;
-import item.Item;
+import engine.components.Character;
+import engine.components.Monster;
 import menus.BattleMenu;
 import menus.BattleMenuButtons;
 import menus.ItemMenu;
 
-import java.util.Arrays;
 import java.util.Random;
 
 import static com.raylib.Raylib.*;
@@ -72,6 +70,8 @@ public class BattleEngine {
     // somehow it works. I think. There's probably some soul-destroying bug hiding
     // in the code somewhere. Somebody needs to test this more other than me.
     // - Skyler
+
+    // TODO!!!: Fix crash when the last character/monster dies (index goes out of bounds because it tries moving to the next character/monster when there isn't one)
 
     // TODO: Implement critical attacks and miss attacks for monsters (this is *super* important with the current balance... maybe not the criticals though)
     // TODO: Monsters and characters need balancing

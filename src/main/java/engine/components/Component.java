@@ -1,4 +1,6 @@
-package engine;
+package engine.components;
+
+import engine.GameObject;
 
 public abstract class Component {
     public String type;

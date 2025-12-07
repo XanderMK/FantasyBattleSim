@@ -2,14 +2,14 @@ package scene;
 
 import engine.GameObject;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
 public abstract class Scene {
 
-    protected HashSet<GameObject> objects;
+    protected ArrayList<GameObject> objects;
 
     public Scene() {
-        objects = new HashSet<>();
+        objects = new ArrayList<>();
     }
 
     public abstract void Init();
@@ -24,7 +24,7 @@ public abstract class Scene {
             gameObject.Render();
     }
 
-    public HashSet<GameObject> getObjects() {
+    public ArrayList<GameObject> getObjects() {
         return objects;
     }
 

@@ -1,4 +1,4 @@
-package engine;
+package engine.components;
 
 import static com.raylib.Raylib.*;
 import static main.Main.VIRTUAL_RATIO;
@@ -14,11 +14,11 @@ public class Button extends Component {
     private boolean pressed = false;
 
     public Button() {
-        type = "engine.Button";
+        type = "engine.components.Button";
     }
 
     public Button(String text, int width, int height) {
-        type = "engine.Button";
+        type = "engine.components.Button";
 
         this.text = text;
         this.width = width;
@@ -26,7 +26,7 @@ public class Button extends Component {
     }
 
     public Button(String text, int width, int height, float offX, float offY) {
-        type = "engine.Button";
+        type = "engine.components.Button";
 
         this.text = text;
         this.width = width;

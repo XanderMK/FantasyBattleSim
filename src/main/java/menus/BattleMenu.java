@@ -1,6 +1,9 @@
 package menus;
 
 import engine.*;
+import engine.components.Button;
+import engine.components.ImageButton;
+import engine.components.RectangleRenderer;
 
 import static com.raylib.Jaylib.BLACK;
 import static com.raylib.Raylib.*;
@@ -25,6 +28,11 @@ public class BattleMenu extends GameObject {
     public BattleMenu() {
         super();
 
+        GameObject buttonBackground = new GameObject();
+        buttonBackground.AddComponent(new RectangleRenderer(WIDTH + BORDER_SIZE, HEIGHT + BORDER_SIZE, BLACK, false));
+        buttonBackground.transform.SetGlobalPosition(new Vector2().x(VIRTUAL_WIDTH - WIDTH - BORDER_SIZE).y(VIRTUAL_HEIGHT - HEIGHT - BORDER_SIZE));
+        AddChild(buttonBackground);
+
         faceButtonObj = new GameObject();
         AddChild(faceButtonObj);
 
@@ -42,11 +50,6 @@ public class BattleMenu extends GameObject {
 
         faceButtonObj.transform.SetGlobalPosition(new Vector2().x(VIRTUAL_WIDTH - WIDTH - ((float) BORDER_SIZE / 2))
                 .y(VIRTUAL_HEIGHT - HEIGHT - ((float) BORDER_SIZE / 2)));
-
-        GameObject buttonBackground = new GameObject();
-        buttonBackground.AddComponent(new RectangleRenderer(WIDTH + BORDER_SIZE, HEIGHT + BORDER_SIZE, BLACK, false));
-        buttonBackground.transform.SetGlobalPosition(new Vector2().x(VIRTUAL_WIDTH - WIDTH - BORDER_SIZE).y(VIRTUAL_HEIGHT - HEIGHT - BORDER_SIZE));
-        AddChild(buttonBackground);
 
         attackButtonObj = new GameObject();
         AddChild(attackButtonObj);

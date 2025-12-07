@@ -1,11 +1,11 @@
-package entity;
+package engine.components;
 
-import static com.raylib.Raylib.*;
-import engine.GameObject;
 import engine.ResourceManager;
 import engine.Timer;
 
-public abstract class Entity extends GameObject {
+import static com.raylib.Raylib.*;
+
+public abstract class Entity extends Component {
 
     protected String name;
 
@@ -25,6 +25,8 @@ public abstract class Entity extends GameObject {
     private Sound fxHit;
 
     public Entity(String name, double health, double attackDamage) {
+        type = "engine.components.Entity";
+
         this.name = name;
         this.health = health;
         this.attackDamage = attackDamage;
@@ -54,7 +56,7 @@ public abstract class Entity extends GameObject {
 
         timer = new Timer(0.1f);
 
-        transform.localPosition.x((float) (transform.localPosition.x() + moveDistance));
+        parentObject.transform.localPosition.x((float) (parentObject.transform.localPosition.x() + moveDistance));
         timer.start();
         PlaySound(fxHit);
     }
@@ -64,9 +66,12 @@ public abstract class Entity extends GameObject {
         if (timer == null) return;
 
         if (timer.timerDone()) {
-            transform.localPosition.x((float) (transform.localPosition.x() - moveDistance));
+            parentObject.transform.localPosition.x((float) (parentObject.transform.localPosition.x() - moveDistance));
         }
     }
+
+    @Override
+    public void Render() { }
 
     public void resetAttackDamage() {
         attackDamage = BASE_ATTACK_DAMAGE;

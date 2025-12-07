@@ -1,13 +1,14 @@
-package engine;
+package engine.components;
 
-import org.w3c.dom.css.Rect;
-
-import java.nio.file.attribute.FileAttribute;
+import engine.GameObject;
+import engine.ResourceManager;
+import engine.Timer;
 
 import static com.raylib.Jaylib.BLACK;
 import static com.raylib.Raylib.*;
 import static com.raylib.Jaylib.WHITE;
 
+// TODO: Convert to Component
 public class DialogueBox extends GameObject {
 
     private final int WIDTH = 900;

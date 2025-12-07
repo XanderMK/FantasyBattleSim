@@ -1,10 +1,13 @@
 package engine;
 
-import java.util.HashSet;
+import engine.components.Component;
+import engine.components.Transform;
+
+import java.util.ArrayList;
 
 public class GameObject {
-    public HashSet<GameObject> children = new HashSet<>();
-    public HashSet<Component> components = new HashSet<>();
+    public ArrayList<GameObject> children = new ArrayList<>();
+    public ArrayList<Component> components = new ArrayList<>();
 
     public GameObject parent = null;
     public Transform transform;

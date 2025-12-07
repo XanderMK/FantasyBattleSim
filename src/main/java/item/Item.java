@@ -1,9 +1,9 @@
 package item;
 
 import engine.GameObject;
-import engine.SpriteRenderer;
-import entity.Monster;
-import entity.Character;
+import engine.components.SpriteRenderer;
+import engine.components.Monster;
+import engine.components.Character;
 
 import static com.raylib.Raylib.*;
 
