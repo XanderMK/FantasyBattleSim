@@ -9,6 +9,7 @@ import menus.BattleMenuButtons;
 import menus.ItemMenu;
 import scene.LoseScene;
 import scene.SceneManager;
+import scene.WinScene;
 
 import java.util.Random;
 
@@ -284,17 +285,24 @@ public class BattleEngine {
             }
         }
 
-        // TODO: Action for battle end
         if (allCharactersDead() && !dialogueBox.isVisible()) {
             battleState = BattleState.LOSS;
-        }
-
-        if (allMonstersDead() && !dialogueBox.isVisible()) {
-            battleState = BattleState.WIN;
-        }
-
-        if (battleState.equals(BattleState.LOSS)) {
             SceneManager.setScene(true, new LoseScene());
+        }
+
+        if (allMonstersDead() && !battleState.equals(BattleState.WIN) && !dialogueBox.isPlaying()) {
+            battleState = BattleState.WIN;
+            waiting = false;
+        }
+
+        if (battleState.equals(BattleState.WIN)) {
+            if (!waiting) {
+                dialogueBox.promptText("You win! You have defeated Billy and his evil Goblins.");
+                waiting = true;
+            }
+            if (!dialogueBox.isVisible()) {
+                SceneManager.setScene(true, new WinScene(characters));
+            }
         }
     }
 

@@ -4,6 +4,7 @@ import engine.ResourceManager;
 import scene.BattleScene;
 import scene.Scene;
 import scene.SceneManager;
+import scene.WinScene;
 
 import static com.raylib.Jaylib.*;
 import static com.raylib.Raylib.Rectangle;
@@ -14,8 +15,8 @@ public class Main {
     private static SceneManager sceneManager;
 
     // "Real" screen resolution (can be changed without issue)
-    private final static int WIDTH = 1600;
-    private final static int HEIGHT = 900;
+    private final static int WIDTH = 1920;
+    private final static int HEIGHT = 1080;
 
     // "Virtual" screen resolution (changing this will cause problems)
     public final static int VIRTUAL_WIDTH = 1280;
@@ -85,14 +86,11 @@ public class Main {
     }
 
     private static void Update() {
-        // TODO: If we want multiple scenes move this to an ArrayList or something of scenes instead
         sceneManager.Update();
     }
 
     private static void Render() {
         sceneManager.Render();
-        // Remove FPS counter at some point
-        DrawFPS(20, 20);
     }
 
     private static void Exit() {
