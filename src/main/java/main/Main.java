@@ -15,8 +15,8 @@ public class Main {
     private static SceneManager sceneManager;
 
     // "Real" screen resolution (can be changed without issue)
-    private final static int WIDTH = 1920;
-    private final static int HEIGHT = 1080;
+    private final static int WIDTH = 1600;
+    private final static int HEIGHT = 900;
 
     // "Virtual" screen resolution (changing this will cause problems)
     public final static int VIRTUAL_WIDTH = 1280;

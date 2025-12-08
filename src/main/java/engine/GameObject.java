@@ -57,4 +57,10 @@ public class GameObject {
         children.add(child);
         child.parent = this;
     }
+
+    public void RemoveChild(GameObject child) {
+        children.remove(child);
+        child.parent = null;
+    }
+
 }

@@ -116,6 +116,14 @@ public class BattleScene extends Scene {
             GameObject healthBar = new GameObject();
             HealthBar healthBarComp = new HealthBar();
             healthBarComp.SetTarget(monster);
+            // Move Goblin 1 health bar down cuz it was annoying me
+            if (monster.getName().equals("Goblin 1")) {
+                healthBar.transform.localPosition.y(15).x(-5);
+            }
+            // Move Goblin 2 down too cuz its annoying me that they're different heights
+            if (monster.getName().equals("Goblin 2")) {
+                healthBar.transform.localPosition.y(15).x(-5);
+            }
             healthBar.AddComponent(healthBarComp);
             monster.parentObject.AddChild(healthBar);
         }

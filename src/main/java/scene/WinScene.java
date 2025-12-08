@@ -1,5 +1,6 @@
 package scene;
 
+import com.raylib.Raylib;
 import engine.GameObject;
 import engine.ResourceManager;
 import engine.Timer;
@@ -18,8 +19,11 @@ import java.util.Random;
 import static com.raylib.Jaylib.BLACK;
 import static com.raylib.Jaylib.WHITE;
 import static com.raylib.Raylib.GetFontDefault;
+import static com.raylib.Raylib.PlaySound;
 
 public class WinScene extends Scene {
+
+    private Random random;
 
     private Timer timer;
     private DialogueBox dialogueBox;
@@ -31,13 +35,17 @@ public class WinScene extends Scene {
     private GameObject mohammedText, darwinText;
     private Text mohammedReward, darwinReward;
 
-    private Item reward;
-    private Random random;
+    private long mohammedXP, darwinXP;
+    private Item mohammedItem, darwinItem;
 
-    private byte rewardCount = 0;
+    private Raylib.Sound fxItemGain, fxXpGain;
+
+    private byte rewardCount = 0, rewardStore;
 
     public WinScene(Character[] characters) {
         this.characters = characters;
+
+        random = new Random();
 
         timer = new Timer(1.5f);
         dialogueBox = new DialogueBox(0.03);
@@ -69,9 +77,9 @@ public class WinScene extends Scene {
         mohammed.active = false;
 
         mohammedText = new GameObject();
-        mohammedReward = new Text("+100 XP!", GetFontDefault(), 50, 3.0f, BLACK);
+        mohammedReward = new Text("", GetFontDefault(), 50, 3.0f, BLACK);
 
-        mohammedText.transform.localPosition.x(230).y(200);
+        mohammedText.transform.localPosition.x(280).y(200);
 
         mohammedText.AddComponent(mohammedReward);
 
@@ -80,9 +88,9 @@ public class WinScene extends Scene {
         mohammedText.active = false;
 
         darwinText = new GameObject();
-        darwinReward = new Text("+100 XP!", GetFontDefault(), 50, 3.0f, BLACK);
+        darwinReward = new Text("", GetFontDefault(), 50, 3.0f, BLACK);
 
-        darwinText.transform.localPosition.x(230).y(500);
+        darwinText.transform.localPosition.x(280).y(525);
 
         darwinText.AddComponent(darwinReward);
 
@@ -90,35 +98,30 @@ public class WinScene extends Scene {
 
         darwinText.active = false;
 
-        random = new Random();
-        byte rewardItem = (byte) random.nextInt(0, 3);
-
-        switch (rewardItem) {
-            case 0:
-                reward = new HealthItem();
-                break;
-            case 1:
-                reward = new ManaItem();
-                break;
-            case 2:
-                reward = new FireballItem();
-                break;
-        }
-
-        // Add rewards
-        characters[0].increaseXP(100);
-        characters[1].increaseXP(100);
-
-        characters[0].getInventory().addItem(reward);
-        characters[1].getInventory().addItem(reward);
+        fxItemGain = ResourceManager.GetSound("resources/sfx/itemgain.wav");
+        fxXpGain = ResourceManager.GetSound("resources/sfx/xpgain.wav");
     }
 
     @Override
     public void Init() {
-        if (characters[0].isAlive()) {
-            dialogueBox.promptText("Here are your rewards for defeating the Big Bad Billy...");
-        } else {
+        mohammedXP = random.nextLong(80, 120);
+        characters[0].increaseXP(mohammedXP);
+
+        mohammedItem = generateItem();
+        characters[0].getInventory().addItem(mohammedItem);
+
+        darwinXP = random.nextLong(80, 120);
+        characters[1].increaseXP(darwinXP);
+
+        darwinItem = generateItem();
+        characters[1].getInventory().addItem(darwinItem);
+
+        if (!characters[0].isAlive()) {
             dialogueBox.promptText("Luckily, Mohammed recovered from his injuries.\nHere are your rewards for defeating Billy...");
+        } else if (!characters[1].isAlive()) {
+            dialogueBox.promptText("Luckily, Darwin recovered from his injuries.\nHere are your rewards for defeating Billy...");
+        } else {
+            dialogueBox.promptText("Here are your rewards for defeating the Big Bad Billy...");
         }
     }
 
@@ -131,24 +134,36 @@ public class WinScene extends Scene {
                 timer.start();
             }
 
-            switch (rewardCount) {
+            switch (rewardStore) {
                 case 0:
                     mohammed.active = true;
                     break;
                 case 1:
                     mohammedText.active = true;
+
+                    mohammedReward.text = String.format("+%d XP!", mohammedXP);
+
+                    PlaySound(fxXpGain);
                     break;
                 case 2:
-                    mohammedReward.text = "+100 XP! New item: " + reward.getName();
+                    mohammedReward.text = String.format("+%d XP!   New item: %s!", mohammedXP, mohammedItem.getName());
+
+                    PlaySound(fxItemGain);
                     break;
                 case 3:
                     darwin.active = true;
                     break;
                 case 4:
                     darwinText.active = true;
+
+                    darwinReward.text = String.format("+%d XP!", darwinXP);
+
+                    PlaySound(fxXpGain);
                     break;
                 case 5:
-                    darwinReward.text = "+100 XP! New item: " + reward.getName();
+                    darwinReward.text = String.format("+%d XP!   New item: %s!", darwinXP, darwinItem.getName());
+
+                    PlaySound(fxItemGain);
                     break;
                 case 6:
                     dialogueBox.promptText("And of course... Mohammed gets all his keyboards back!");
@@ -161,11 +176,24 @@ public class WinScene extends Scene {
                     // TODO: Change scene to TitleScreen if it is added :)
                     // Otherwise, do something else other than exit
             }
+
+            rewardStore = 0;
         }
 
         if (timer.timerDone()) {
             rewardCount++;
+            rewardStore = rewardCount;
         }
+    }
+
+    public Item generateItem() {
+        byte itemNumber = (byte) random.nextInt(0, 3);
+
+        return switch (itemNumber) {
+            case 1 -> new ManaItem();
+            case 2 -> new FireballItem();
+            default -> new HealthItem();
+        };
     }
 
 }

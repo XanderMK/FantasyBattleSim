@@ -6,6 +6,7 @@ import engine.components.ImageButton;
 import engine.components.RectangleRenderer;
 
 import static com.raylib.Jaylib.BLACK;
+import static com.raylib.Jaylib.DARKGRAY;
 import static com.raylib.Raylib.*;
 import static main.Main.*;
 
@@ -24,6 +25,9 @@ public class BattleMenu extends GameObject {
 
     private GameObject attackButtonObj;
     private Button[] attackButtons;
+
+    private GameObject backgroundObj;
+    private RectangleRenderer backgroundRectangle;
 
     public BattleMenu() {
         super();
@@ -48,6 +52,14 @@ public class BattleMenu extends GameObject {
             faceButtonObj.AddComponent(face);
         }
 
+        backgroundObj = new GameObject();
+        backgroundRectangle = new RectangleRenderer(670, 50, DARKGRAY, false);
+
+        backgroundObj.AddComponent(backgroundRectangle);
+        backgroundObj.transform.SetGlobalPosition(new Vector2().x(140).y(VIRTUAL_HEIGHT - 100));
+
+        AddChild(backgroundObj);
+
         faceButtonObj.transform.SetGlobalPosition(new Vector2().x(VIRTUAL_WIDTH - WIDTH - ((float) BORDER_SIZE / 2))
                 .y(VIRTUAL_HEIGHT - HEIGHT - ((float) BORDER_SIZE / 2)));
 
@@ -62,6 +74,7 @@ public class BattleMenu extends GameObject {
         for (Button button : attackButtons) {
             attackButtonObj.AddComponent(button);
         }
+
         disableAttackButtons();
     }
 
@@ -88,12 +101,14 @@ public class BattleMenu extends GameObject {
     }
 
     public void enableAttackButtons() {
+        backgroundObj.active = true;
         for (Button button : attackButtons) {
             button.visible = true;
         }
     }
 
     public void disableAttackButtons() {
+        backgroundObj.active = false;
         for (Button button : attackButtons) {
             button.visible = false;
         }

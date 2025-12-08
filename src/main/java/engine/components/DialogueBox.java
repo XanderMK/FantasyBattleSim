@@ -4,9 +4,8 @@ import engine.GameObject;
 import engine.ResourceManager;
 import engine.Timer;
 
-import static com.raylib.Jaylib.BLACK;
+import static com.raylib.Jaylib.*;
 import static com.raylib.Raylib.*;
-import static com.raylib.Jaylib.WHITE;
 
 // TODO: Convert to Component
 public class DialogueBox extends GameObject {
@@ -34,12 +33,22 @@ public class DialogueBox extends GameObject {
 
     private Sound fxTextMove, fxClick;
 
+    private GameObject continueArrow;
+
     public DialogueBox(double timeBetweenChar) {
         this.timeBetweenChar = timeBetweenChar;
 
         timer = new Timer(timeBetweenChar);
         fxTextMove = ResourceManager.GetSound("resources/sfx/textmove.wav");
         fxClick = ResourceManager.GetSound("resources/sfx/click.wav");
+        
+        continueArrow = new GameObject();
+        continueArrow.AddComponent(new SpriteRenderer(
+                ResourceManager.GetTexture("resources/misc/Select.png"), DARKGRAY
+        ));
+        continueArrow.transform.localPosition.x(WIDTH - 42).y(HEIGHT - 38);
+        continueArrow.transform.localScale = 4.0f;
+        continueArrow.active = false;
     }
 
     public void promptText(String line) {
@@ -57,6 +66,7 @@ public class DialogueBox extends GameObject {
         AddComponent(outline);
         AddComponent(text);
         AddComponent(base);
+        continueArrow.active = false;
         timer.start();
         playing = true;
         visible = true;
@@ -68,6 +78,8 @@ public class DialogueBox extends GameObject {
         RemoveComponent(outline);
         RemoveComponent(base);
         RemoveComponent(text);
+        RemoveChild(continueArrow);
+        continueArrow.active = false;
         PlaySound(fxClick);
         timer.waitTime = timeBetweenChar;
         visible = false;
@@ -78,6 +90,8 @@ public class DialogueBox extends GameObject {
         if (timer.timerDone() && playing) {
             if (nextChar >= line.length()) {
                 playing = false;
+                AddChild(continueArrow);
+                continueArrow.active = true;
                 return;
             }
 
@@ -118,6 +132,7 @@ public class DialogueBox extends GameObject {
             base.Render();
             text.Render();
         }
+        continueArrow.Render();
     }
 
     public boolean isPlaying() {
