@@ -5,7 +5,7 @@ import item.Item;
 
 public class Character extends Entity {
 
-    private final double ATTACK_DAMAGE_MULTIPLIER = 1.25;
+    private final double ATTACK_DAMAGE_MULTIPLIER = 1.35;
 
     private double defense;
     private final double MAX_DEFENSE;

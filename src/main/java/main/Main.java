@@ -3,6 +3,7 @@ package main;
 import engine.ResourceManager;
 import scene.BattleScene;
 import scene.Scene;
+import scene.SceneManager;
 
 import static com.raylib.Jaylib.*;
 import static com.raylib.Raylib.Rectangle;
@@ -10,7 +11,7 @@ import static com.raylib.Raylib.Vector2;
 
 public class Main {
 
-    private static Scene currentScene;
+    private static SceneManager sceneManager;
 
     // "Real" screen resolution (can be changed without issue)
     private final static int WIDTH = 1600;
@@ -78,18 +79,18 @@ public class Main {
                 .width(WIDTH + (VIRTUAL_RATIO * 2))
                 .height(HEIGHT + (VIRTUAL_RATIO * 2));
 
-        // Init scenes
-        currentScene = new BattleScene();
-        currentScene.Init();
+        // Init sceneManager
+        sceneManager = new SceneManager(new BattleScene());
+        sceneManager.Init();
     }
 
     private static void Update() {
         // TODO: If we want multiple scenes move this to an ArrayList or something of scenes instead
-        currentScene.Update();
+        sceneManager.Update();
     }
 
     private static void Render() {
-        currentScene.Render();
+        sceneManager.Render();
         // Remove FPS counter at some point
         DrawFPS(20, 20);
     }

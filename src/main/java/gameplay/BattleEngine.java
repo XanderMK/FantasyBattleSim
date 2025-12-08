@@ -7,6 +7,8 @@ import engine.components.Character;
 import menus.BattleMenu;
 import menus.BattleMenuButtons;
 import menus.ItemMenu;
+import scene.LoseScene;
+import scene.SceneManager;
 
 import java.util.Random;
 
@@ -69,7 +71,8 @@ public class BattleEngine {
     // in the code somewhere. Somebody needs to test this more other than me.
     // - Skyler
 
-    // TODO: Implement critical attacks and miss attacks for monsters (this is *super* important with the current balance... maybe not the criticals though)
+    // P.S. It may seem like im complaining, but I really enjoyed working on this project :)
+
     // TODO: Monsters and characters need balancing
     // TODO: Truncate visual numerical decimals to 2 max
 
@@ -95,6 +98,9 @@ public class BattleEngine {
                     attackingMonster = (byte) random.nextInt(0, monsters.length);
                 } while (!monsters[attackingMonster].isAlive());
 
+                double criticalChance = random.nextDouble(0.0, 1.0);
+                double missChance = random.nextDouble(0.0, 1.0);
+
                 if (battleMenu.getFaceButtonAt(BattleMenuButtons.FACE_ATTACK.index).isPressed()) {
                     if (itemMenu.active) return;
 
@@ -109,9 +115,20 @@ public class BattleEngine {
                     characters[currentCharacter].attackAnimation(true);
 
                     battleMenu.disableAttackButtons();
-                    dialogueBox.promptText(characters[currentCharacter].getName() + " used a normal attack on " + monsters[attackingMonster].getName() + ". It did " +
-                            characters[currentCharacter].getAttackDamage() + " damage!");
-                    monsters[attackingMonster].modifyHealth(-characters[currentCharacter].getAttackDamage());
+
+                    if (missChance < 0.10) { // 10% chance for miss
+                        dialogueBox.promptText(characters[currentCharacter].getName() + " missed!");
+                    } else if (criticalChance < 0.35) { // 35% chance for critical attacks
+                        double modifiedDamage = characters[currentCharacter].getAttackDamage() * 1.2;
+
+                        dialogueBox.promptText("CRITICAL! " + characters[currentCharacter].getName() + " used a normal attack on " +
+                                monsters[attackingMonster].getName() + ". It did " + modifiedDamage + " damage!");
+                        monsters[attackingMonster].modifyHealth(-modifiedDamage);
+                    } else {
+                        dialogueBox.promptText(characters[currentCharacter].getName() + " used a normal attack on " + monsters[attackingMonster].getName() + ". It did " +
+                                characters[currentCharacter].getAttackDamage() + " damage!");
+                        monsters[attackingMonster].modifyHealth(-characters[currentCharacter].getAttackDamage());
+                    }
 
                     methodChosen = true;
                 }
@@ -217,6 +234,8 @@ public class BattleEngine {
                 return;
             }
 
+            double missChance = random.nextDouble(0.0, 1.0);
+
             if (!waiting) {
                 dialogueBox.promptText(monsters[currentMonster].getName() + " is attacking..!");
                 waiting = true;
@@ -225,24 +244,30 @@ public class BattleEngine {
             if (waiting && timer.timerDone() && !monsterAttacked) {
                 byte attackingCharacter = (byte) random.nextInt(0, characters.length);
 
-                if (characters[attackingCharacter].isDefending()) {
-                    double modifiedDamage = monsters[currentMonster].getAttackDamage() / monsters[currentMonster].getAttackDamageMultiplier();
+                if (missChance < 0.75) { // 75% chance to hit
+                    if (characters[attackingCharacter].isDefending()) {
+                        double modifiedDamage = monsters[currentMonster].getAttackDamage() / monsters[currentMonster].getAttackDamageMultiplier();
 
-                    monsters[currentMonster].attackAnimation(false);
+                        monsters[currentMonster].attackAnimation(false);
 
-                    dialogueBox.promptText(monsters[currentMonster].getName() + " attacked " + characters[attackingCharacter].getName() + "!" + " Extra defense is active. -" +
-                            modifiedDamage + " HP.");
-                    characters[attackingCharacter].setDefending(false);
+                        dialogueBox.promptText(monsters[currentMonster].getName() + " attacked " + characters[attackingCharacter].getName() + "!" + " Extra defense is active. -" +
+                                modifiedDamage + " HP.");
+                        characters[attackingCharacter].setDefending(false);
 
-                    characters[attackingCharacter].modifyHealth(-modifiedDamage);
-                    characters[attackingCharacter].modifyDefense(-DEFENSE_DRAIN);
+                        characters[attackingCharacter].modifyHealth(-modifiedDamage);
+                        characters[attackingCharacter].modifyDefense(-DEFENSE_DRAIN);
+                    } else {
+                        monsters[currentMonster].attackAnimation(false);
+
+                        dialogueBox.promptText(monsters[currentMonster].getName() + " attacked " + characters[attackingCharacter].getName() + "! -" +
+                                monsters[currentMonster].getAttackDamage() + " HP");
+
+                        characters[attackingCharacter].modifyHealth(-monsters[currentMonster].getAttackDamage());
+                    }
                 } else {
                     monsters[currentMonster].attackAnimation(false);
 
-                    dialogueBox.promptText(monsters[currentMonster].getName() + " attacked " + characters[attackingCharacter].getName() + "! -" +
-                            monsters[currentMonster].getAttackDamage() + " HP");
-
-                    characters[attackingCharacter].modifyHealth(-monsters[currentMonster].getAttackDamage());
+                    dialogueBox.promptText(monsters[currentMonster].getName() + " missed!");
                 }
 
                 monsterAttacked = true;
@@ -260,12 +285,16 @@ public class BattleEngine {
         }
 
         // TODO: Action for battle end
-        if (allCharactersDead()) {
+        if (allCharactersDead() && !dialogueBox.isVisible()) {
             battleState = BattleState.LOSS;
         }
 
-        if (allMonstersDead()) {
+        if (allMonstersDead() && !dialogueBox.isVisible()) {
             battleState = BattleState.WIN;
+        }
+
+        if (battleState.equals(BattleState.LOSS)) {
+            SceneManager.setScene(true, new LoseScene());
         }
     }
 
@@ -288,5 +317,7 @@ public class BattleEngine {
 
         return true;
     }
+
+    // Hi! You scrolled all the way to the bottom. And what did you find? Nothing.
 
 }
