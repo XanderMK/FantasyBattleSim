@@ -55,6 +55,8 @@ public class Main {
         InitWindow(WIDTH, HEIGHT, "Fantasy Battle Sim");
         SetTargetFPS(60);
 
+        SetExitKey(KEY_NULL);
+
         InitAudioDevice();
         SetMasterVolume(0.5f);
 

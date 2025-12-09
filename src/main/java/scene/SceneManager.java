@@ -1,5 +1,7 @@
 package scene;
 
+import engine.ResourceManager;
+
 public class SceneManager {
 
     private static Scene currentScene;
@@ -22,6 +24,7 @@ public class SceneManager {
 
     public static void setScene(boolean autoInit, Scene scene) {
         currentScene = scene;
+        ResourceManager.UnloadAllAssets();
         if (autoInit) currentScene.Init();
     }
 

@@ -39,7 +39,7 @@ public class BattleEngine {
 
     private BattleState battleState;
 
-    private Sound fxItem;
+    private Sound fxItem, fxDefend;
 
     public BattleEngine(Character[] characters, Monster[] monsters, BattleMenu battleMenu, DialogueBox dialogueBox, ItemMenu itemMenu) {
         this.characters = characters;
@@ -54,6 +54,7 @@ public class BattleEngine {
         battleState = BattleState.NOT_STARTED;
 
         fxItem = ResourceManager.GetSound("resources/sfx/item.wav");
+        fxDefend = ResourceManager.GetSound("resources/sfx/defend.wav");
     }
 
     public void startBattle() {
@@ -87,6 +88,7 @@ public class BattleEngine {
             }
 
             if (!waiting) {
+                battleMenu.cover.active = false;
                 dialogueBox.promptText(characters[currentCharacter].getName() + ", you're up!");
                 waiting = true;
             }
@@ -184,6 +186,8 @@ public class BattleEngine {
                             PlaySound(fxItem);
                             itemIndex = i;
                             usedItem = true;
+
+                            methodChosen = true;
                         }
 
                         i++;
@@ -193,8 +197,6 @@ public class BattleEngine {
                 if (!dialogueBox.isVisible() && usedItem) {
                     characters[currentCharacter].getInventory().removeItem(characters[currentCharacter].getInventory().getItem(itemIndex));
                     usedItem = false;
-
-                    methodChosen = true;
                 }
 
                 if (battleMenu.getFaceButtonAt(BattleMenuButtons.FACE_DEFEND.index).isPressed() && !methodChosen) {
@@ -213,12 +215,17 @@ public class BattleEngine {
                     dialogueBox.promptText(characters[currentCharacter].getName() + " has extra defense next enemy attack!");
                     characters[currentCharacter].setDefending(true);
                     characters[currentCharacter].modifyDefense(-DEFENSE_DRAIN);
+                    PlaySound(fxDefend);
 
                     methodChosen = true;
                 }
 
                 if (battleMenu.getFaceButtonAt(BattleMenuButtons.FACE_FLEE.index).isPressed() && !methodChosen) {
                     dialogueBox.promptText("You cannot flee from this fight!");
+                }
+
+                if (methodChosen) {
+                    battleMenu.cover.active = true;
                 }
 
                 if (methodChosen && !dialogueBox.isPlaying()) {

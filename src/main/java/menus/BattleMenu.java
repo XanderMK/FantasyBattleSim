@@ -29,6 +29,10 @@ public class BattleMenu extends GameObject {
     private GameObject backgroundObj;
     private RectangleRenderer backgroundRectangle;
 
+    public GameObject cover;
+    private RectangleRenderer coverRectangle;
+    private Color coverColor;
+
     public BattleMenu() {
         super();
 
@@ -76,6 +80,19 @@ public class BattleMenu extends GameObject {
         }
 
         disableAttackButtons();
+
+        coverColor = new Color()
+                .r((byte) -1)
+                .g((byte) 0)
+                .b((byte) -1)
+                .a((byte) 30);
+
+        cover = new GameObject();
+        coverRectangle = new RectangleRenderer(WIDTH, HEIGHT, coverColor, false);
+        cover.AddComponent(coverRectangle);
+        cover.transform.SetGlobalPosition(new Vector2().x(VIRTUAL_WIDTH - WIDTH - BORDER_SIZE / 2.0f).y(VIRTUAL_HEIGHT - HEIGHT - BORDER_SIZE / 2.0f));
+        AddChild(cover);
+        cover.active = false;
     }
 
     @Override

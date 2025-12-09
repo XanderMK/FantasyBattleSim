@@ -44,7 +44,10 @@ public class WinScene extends Scene {
 
     public WinScene(Character[] characters) {
         this.characters = characters;
+    }
 
+    @Override
+    public void Init() {
         random = new Random();
 
         timer = new Timer(1.5f);
@@ -100,10 +103,7 @@ public class WinScene extends Scene {
 
         fxItemGain = ResourceManager.GetSound("resources/sfx/itemgain.wav");
         fxXpGain = ResourceManager.GetSound("resources/sfx/xpgain.wav");
-    }
 
-    @Override
-    public void Init() {
         mohammedXP = random.nextLong(80, 120);
         characters[0].increaseXP(mohammedXP);
 

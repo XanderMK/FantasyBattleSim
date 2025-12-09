@@ -29,7 +29,7 @@ public class TitleScene extends Scene {
     private GameObject info;
     private Text infoText;
 
-    private Sound fxButton;
+    private Sound fxHover;
 
     @Override
     public void Init() {
@@ -92,7 +92,7 @@ public class TitleScene extends Scene {
 
         objects.add(info);
 
-        fxButton = ResourceManager.GetSound("resources/sfx/button.wav");
+        fxHover = ResourceManager.GetSound("resources/sfx/hover.wav");
     }
 
     @Override
@@ -103,7 +103,8 @@ public class TitleScene extends Scene {
         GuiSetStyle(DEFAULT, TEXT_SIZE, 40);
 
         for (ImageButton button : buttons) {
-            if (button.isHovered()) {
+            if (button.isHovered() && !arrow.active) {
+                PlaySound(fxHover);
                 arrow.active = true;
                 arrow.transform.localPosition.y(button.parentObject.transform.localPosition.y() + button.offY + 15);
             }
@@ -111,15 +112,12 @@ public class TitleScene extends Scene {
         if (noButtonHovered()) arrow.active = false;
 
         if (buttons[0].isPressed()) {
-            PlaySound(fxButton);
             SceneManager.setScene(true, new BattleScene());
         }
         if (buttons[1].isPressed()) {
-            PlaySound(fxButton);
-            // TODO: About scene
+            SceneManager.setScene(true, new AboutScene());
         }
-        if (buttons[2].isPressed()) {
-            PlaySound(fxButton);
+        if (buttons[2].isPressed() || IsKeyPressed(KEY_ESCAPE)) {
             Main.Exit();
             System.exit(0);
         }
