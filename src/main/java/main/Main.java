@@ -1,10 +1,7 @@
 package main;
 
 import engine.ResourceManager;
-import scene.BattleScene;
-import scene.Scene;
-import scene.SceneManager;
-import scene.WinScene;
+import scene.*;
 
 import static com.raylib.Jaylib.*;
 import static com.raylib.Raylib.Rectangle;
@@ -81,7 +78,7 @@ public class Main {
                 .height(HEIGHT + (VIRTUAL_RATIO * 2));
 
         // Init sceneManager
-        sceneManager = new SceneManager(new BattleScene());
+        sceneManager = new SceneManager(new TitleScene());
         sceneManager.Init();
     }
 
@@ -93,7 +90,7 @@ public class Main {
         sceneManager.Render();
     }
 
-    private static void Exit() {
+    public static void Exit() {
         ResourceManager.UnloadAllAssets();
         UnloadRenderTexture(target);
         CloseAudioDevice();

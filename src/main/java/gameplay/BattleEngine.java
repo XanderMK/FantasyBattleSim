@@ -74,9 +74,6 @@ public class BattleEngine {
 
     // P.S. It may seem like im complaining, but I really enjoyed working on this project :)
 
-    // TODO: Monsters and characters need balancing
-    // TODO: Truncate visual numerical decimals to 2 max
-
     public void Update() {
         if (battleState.equals(BattleState.ONGOING) && currentCharacter != -1 && currentMonster == -1) {
             if (!characters[currentCharacter].isAlive()) {
@@ -102,7 +99,7 @@ public class BattleEngine {
                 double criticalChance = random.nextDouble(0.0, 1.0);
                 double missChance = random.nextDouble(0.0, 1.0);
 
-                if (battleMenu.getFaceButtonAt(BattleMenuButtons.FACE_ATTACK.index).isPressed()) {
+                if (battleMenu.getFaceButtonAt(BattleMenuButtons.FACE_ATTACK.index).isPressed() && !methodChosen) {
                     if (itemMenu.active) return;
 
                     if (battleMenu.getAttackButtonAt(0).visible) {
@@ -156,7 +153,7 @@ public class BattleEngine {
 
                 if (battleMenu.getAttackButtonAt(0).visible) return;
 
-                if (battleMenu.getFaceButtonAt(BattleMenuButtons.FACE_ITEM.index).isPressed()) {
+                if (battleMenu.getFaceButtonAt(BattleMenuButtons.FACE_ITEM.index).isPressed() && !methodChosen) {
                     if (itemMenu.active) {
                         itemMenu.closeInventory();
                     } else {
@@ -200,14 +197,27 @@ public class BattleEngine {
                     methodChosen = true;
                 }
 
-                if (battleMenu.getFaceButtonAt(BattleMenuButtons.FACE_DEFEND.index).isPressed()) {
+                if (battleMenu.getFaceButtonAt(BattleMenuButtons.FACE_DEFEND.index).isPressed() && !methodChosen) {
+                    if (characters[currentCharacter].isDefending()) {
+                        dialogueBox.promptText("You are already defending! You have not been hit yet.");
+
+                        return;
+                    }
+
+                    if (characters[currentCharacter].getDefense() <= 0) {
+                        dialogueBox.promptText("You are out of defense! You can no longer defend.");
+
+                        return;
+                    }
+
                     dialogueBox.promptText(characters[currentCharacter].getName() + " has extra defense next enemy attack!");
                     characters[currentCharacter].setDefending(true);
+                    characters[currentCharacter].modifyDefense(-DEFENSE_DRAIN);
 
                     methodChosen = true;
                 }
 
-                if (battleMenu.getFaceButtonAt(BattleMenuButtons.FACE_FLEE.index).isPressed()) {
+                if (battleMenu.getFaceButtonAt(BattleMenuButtons.FACE_FLEE.index).isPressed() && !methodChosen) {
                     dialogueBox.promptText("You cannot flee from this fight!");
                 }
 
@@ -247,16 +257,15 @@ public class BattleEngine {
 
                 if (missChance < 0.75) { // 75% chance to hit
                     if (characters[attackingCharacter].isDefending()) {
-                        double modifiedDamage = monsters[currentMonster].getAttackDamage() / monsters[currentMonster].getAttackDamageMultiplier();
+                        double modifiedDamage = monsters[currentMonster].getAttackDamage() / 1.45;
 
                         monsters[currentMonster].attackAnimation(false);
 
                         dialogueBox.promptText(monsters[currentMonster].getName() + " attacked " + characters[attackingCharacter].getName() + "!" + " Extra defense is active. -" +
-                                modifiedDamage + " HP.");
+                                String.format("%.2f", modifiedDamage) + " HP.");
                         characters[attackingCharacter].setDefending(false);
 
                         characters[attackingCharacter].modifyHealth(-modifiedDamage);
-                        characters[attackingCharacter].modifyDefense(-DEFENSE_DRAIN);
                     } else {
                         monsters[currentMonster].attackAnimation(false);
 

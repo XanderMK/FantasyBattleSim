@@ -172,9 +172,7 @@ public class WinScene extends Scene {
                     dialogueBox.promptText("Thanks for playing!");
                     break;
                 case 8:
-                    System.exit(0);
-                    // TODO: Change scene to TitleScreen if it is added :)
-                    // Otherwise, do something else other than exit
+                    SceneManager.setScene(true, new TitleScene());
             }
 
             rewardStore = 0;

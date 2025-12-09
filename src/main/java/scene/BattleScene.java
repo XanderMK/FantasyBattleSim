@@ -33,8 +33,6 @@ public class BattleScene extends Scene {
 
     private Sound fxDead;
 
-    // TODO: The game is too hard rn, maybe even impossible without extreme luck. Must balance.
-
     @Override
     public void Init() {
         // Add the background
@@ -77,6 +75,9 @@ public class BattleScene extends Scene {
             healthBarComp.SetTarget(character);
             healthBar.AddComponent(healthBarComp);
             character.parentObject.AddChild(healthBar);
+
+            // Give each character a hug! (aww)
+            //character.hug();
         }
 
         // Add characters to object list
@@ -117,11 +118,8 @@ public class BattleScene extends Scene {
             HealthBar healthBarComp = new HealthBar();
             healthBarComp.SetTarget(monster);
             // Move Goblin 1 health bar down cuz it was annoying me
-            if (monster.getName().equals("Goblin 1")) {
-                healthBar.transform.localPosition.y(15).x(-5);
-            }
             // Move Goblin 2 down too cuz its annoying me that they're different heights
-            if (monster.getName().equals("Goblin 2")) {
+            if (monster.getName().equals("Goblin 1") || monster.getName().equals("Goblin 2")) {
                 healthBar.transform.localPosition.y(15).x(-5);
             }
             healthBar.AddComponent(healthBarComp);
