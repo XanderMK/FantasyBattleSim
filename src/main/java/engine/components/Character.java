@@ -64,11 +64,6 @@ public class Character extends Entity {
         }
     }
 
-    @Override
-    public void modifyAttackDamage() {
-        attackDamage *= ATTACK_DAMAGE_MULTIPLIER;
-    }
-
     public double getAttackDamageMultiplier() {
         return ATTACK_DAMAGE_MULTIPLIER;
     }

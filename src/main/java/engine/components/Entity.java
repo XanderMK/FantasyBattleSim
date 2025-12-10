@@ -77,8 +77,6 @@ public abstract class Entity extends Component {
         attackDamage = BASE_ATTACK_DAMAGE;
     }
 
-    public abstract void modifyAttackDamage();
-
     public String getName() {
         return name;
     }

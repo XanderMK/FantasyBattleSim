@@ -9,11 +9,6 @@ public class Monster extends Entity {
         type = "engine.components.Monster";
     }
 
-    @Override
-    public void modifyAttackDamage() {
-        attackDamage *= ATTACK_DAMAGE_MULTIPLIER;
-    }
-
     public double getAttackDamageMultiplier() {
         return ATTACK_DAMAGE_MULTIPLIER;
     }

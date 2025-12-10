@@ -117,6 +117,7 @@ public class DialogueBox extends GameObject {
             }
         } else {
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+                timer.waitTime = 0.03;
                 endPrompt();
             }
         }

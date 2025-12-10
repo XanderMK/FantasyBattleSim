@@ -81,6 +81,10 @@ public class BattleMenu extends GameObject {
 
         disableAttackButtons();
 
+        // For some reason colors with some amount of transparency
+        // are tinted red for some reason. I don't know why, but I wanted
+        // this tint to be light gray to denote the buttons can't be pressed,
+        // but I guess a light red works too
         coverColor = new Color()
                 .r((byte) -1)
                 .g((byte) 0)

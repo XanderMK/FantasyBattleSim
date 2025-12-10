@@ -36,4 +36,14 @@ public class LoseScene extends Scene {
         objects.add(gameOverObj);
     }
 
+    @Override
+    public void Update() {
+        for (GameObject gameObject : objects)
+            gameObject.Update();
+
+        if (IsKeyPressed(KEY_ESCAPE)) {
+            SceneManager.setScene(true, new TitleScene());
+        }
+    }
+
 }

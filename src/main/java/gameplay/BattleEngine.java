@@ -174,8 +174,8 @@ public class BattleEngine {
                         if (button.isPressed()) {
                             itemMenu.closeInventory();
 
-                            dialogueBox.promptText(characters[currentCharacter].getName() + " used " + characters[currentCharacter].getInventory().getItem(i).getName() +
-                                    "! " + characters[currentCharacter].getInventory().getItem(i).getDescription());
+                            dialogueBox.promptText(characters[currentCharacter].getName() + " used a " + characters[currentCharacter].getInventory().getItem(i).getName() +
+                                    "! ");
 
                             if (characters[currentCharacter].getInventory().getItem(i).getType().equals("Character")) {
                                 characters[currentCharacter].getInventory().getItem(i).effect(characters[currentCharacter]);
